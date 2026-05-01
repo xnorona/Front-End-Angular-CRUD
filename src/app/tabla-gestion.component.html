@@ -1,0 +1,55 @@
+<div class="crud-container">
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Filtrar Cajeros...</mat-label>
+    <input matInput (keyup)="aplicarFiltro($event)" #input>
+  </mat-form-field>
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    
+    <!-- Columna Serie - CORREGIDA -->
+    <ng-container matColumnDef="serie">
+      <th mat-header-cell *matHeaderCellDef> Serie </th>
+      <td mat-cell *matCellDef="let element"> {{element.serie}} </td>
+    </ng-container>
+
+    <!-- Columna Modelo -->
+    <ng-container matColumnDef="modelo">
+      <th mat-header-cell *matHeaderCellDef> Modelo </th>
+      <td mat-cell *matCellDef="let element"> {{element.modelo}} </td>
+    </ng-container>
+
+    <!-- Columna Ubicación -->
+    <ng-container matColumnDef="ubicacion">
+      <th mat-header-cell *matHeaderCellDef> Ubicación </th>
+      <td mat-cell *matCellDef="let element"> {{element.ubicacion}} </td>
+    </ng-container>
+
+    <!-- Columna Estado con estilos dinámicos -->
+    <ng-container matColumnDef="estado">
+      <th mat-header-cell *matHeaderCellDef> Estado </th>
+      <td mat-cell *matCellDef="let element">
+        <span class="status-badge" [ngClass]="{
+          'status-operativo': element.estado === 'Operativo',
+          'status-mantenimiento': element.estado === 'Mantenimiento',
+          'status-fuera': element.estado === 'Fuera de Servicio'
+        }">{{element.estado}}</span>
+      </td>
+    </ng-container>
+
+    <!-- Columna Acciones -->
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef> Acciones </th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button color="primary" (click)="abrirDialogo(element)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="borrar(element.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+    <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
+  </table>
+</div>
